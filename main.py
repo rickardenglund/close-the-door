@@ -21,6 +21,8 @@ GPIO_LED =8
 GPIO.setup(GPIO_LED, GPIO.OUT)
 
 zone_list = list(soco.discover())
+for zone in zone_list:
+    print(zone)
 
 sound_dir = '/var/www/html/sounds/'
 sounds = []
