@@ -71,9 +71,12 @@ if __name__ == '__main__':
         while True:
             dist = distance()
             print(dist)
-            something_there = something_there_func(dist)
+            something_there = something_there_func(distance())
+            time.sleep(0.5)
+            something_there &= something_there_func(distance())
+
+            
             if something_there:
-                
                 GPIO.output(GPIO_LED, True)
                 time.sleep(2)
                 file ='http://192.168.1.52/sounds/' + random.choice(sounds)
@@ -81,7 +84,7 @@ if __name__ == '__main__':
                   if (sonos.player_name == "Lekrum"):
                     sonos.play_uri(file)
                     print ("close the door")
-                time.sleep(10)
+                time.sleep(1)
             time.sleep(0.4)
             GPIO.output(GPIO_LED, False)
  
