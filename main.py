@@ -3,6 +3,8 @@ import RPi.GPIO as GPIO
 import time
 import soco
 from soco import SoCo
+import os
+import random
  
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
@@ -17,7 +19,18 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
  
 GPIO_LED =8 
 GPIO.setup(GPIO_LED, GPIO.OUT)
+
 zone_list = list(soco.discover())
+
+sound_dir = '/var/www/html/sounds/'
+sounds = []
+for r, d, f in os.walk(sound_dir):
+    for file in f:
+        if '.mp3' in file:
+            sounds.append(file)
+
+for f in sounds:
+    print(f)
 
 sonos = SoCo('192.168.1.18')
 def distance():
@@ -61,8 +74,10 @@ if __name__ == '__main__':
                 
                 GPIO.output(GPIO_LED, True)
                 time.sleep(2)
+                file ='http://192.168.1.52/sounds/' + random.choice(sounds)
                 for sonos in zone_list:
-                  sonos.play_uri('http://192.168.1.52/close_the_door.mp3')
+                  print(file)
+                  sonos.play_uri(file)
                 print ("close the door")
                 time.sleep(10)
             time.sleep(0.4)
