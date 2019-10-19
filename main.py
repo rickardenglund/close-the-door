@@ -6,6 +6,7 @@ from soco import SoCo
 import os
 import random
  
+time.sleep(60)
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
  
