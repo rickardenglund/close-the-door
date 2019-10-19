@@ -63,7 +63,7 @@ def distance():
     return distance
  
 def something_there_func(dist):
-    default = 275
+    default = 182
     return abs(dist - default) > 50
 
 if __name__ == '__main__':
@@ -71,8 +71,10 @@ if __name__ == '__main__':
         while True:
             dist = distance()
             print(dist)
-            something_there = something_there_func(distance())
+            something_there = something_there_func(dist)
             time.sleep(0.5)
+            dist = distance()
+            print(dist)
             something_there &= something_there_func(distance())
 
             
