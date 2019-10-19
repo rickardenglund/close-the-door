@@ -63,7 +63,7 @@ def distance():
     return distance
  
 def something_there_func(dist):
-    default = 167
+    default = 275
     return abs(dist - default) > 50
 
 if __name__ == '__main__':
@@ -78,9 +78,9 @@ if __name__ == '__main__':
                 time.sleep(2)
                 file ='http://192.168.1.52/sounds/' + random.choice(sounds)
                 for sonos in zone_list:
-                  print(file)
-                  sonos.play_uri(file)
-                print ("close the door")
+                  if (sonos.player_name == "Lekrum"):
+                    sonos.play_uri(file)
+                    print ("close the door")
                 time.sleep(10)
             time.sleep(0.4)
             GPIO.output(GPIO_LED, False)
