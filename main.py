@@ -73,7 +73,6 @@ if __name__ == '__main__':
             dist = distance()
             print(dist)
             something_there = something_there_func(dist)
-            # time.sleep(0.1)
             dist = distance()
             print(dist)
             something_there &= something_there_func(distance())
