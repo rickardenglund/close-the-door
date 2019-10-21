@@ -3,6 +3,8 @@ import RPi.GPIO as GPIO
 import time
 import soco
 from soco import SoCo
+from soco.discovery import by_name
+from soco.snapshot import Snapshot
 import os
 import random
  
@@ -32,10 +34,6 @@ for r, d, f in os.walk(sound_dir):
         if '.mp3' in file:
             sounds.append(file)
 
-for f in sounds:
-    print(f)
-
-sonos = SoCo('192.168.1.18')
 def distance():
     # set Trigger to HIGH
     GPIO.output(GPIO_TRIGGER, True)
@@ -67,6 +65,23 @@ def something_there_func(dist):
     default = 182
     return abs(dist - default) > 50
 
+
+def play():
+    file ='http://192.168.1.52/sounds/' + random.choice(sounds)
+    try:
+        sonos = by_name("Lekrum")
+        if sonos.group:
+            sonos = sonos.group.coordinator
+
+        snap = Snapshot(sonos)
+        snap.snapshot()
+        sonos.play_uri(file)
+        time.sleep(5)
+        snap.restore(fade=True)
+    except:
+        print("Failed to play on " + str(sonos))
+
+
 if __name__ == '__main__':
     try:
         while True:
@@ -76,16 +91,13 @@ if __name__ == '__main__':
             dist = distance()
             print(dist)
             something_there &= something_there_func(distance())
+            play()
+            print("close the door")
 
-            
             if something_there:
                 GPIO.output(GPIO_LED, True)
                 time.sleep(2)
-                file ='http://192.168.1.52/sounds/' + random.choice(sounds)
-                for sonos in zone_list:
-                  if (sonos.player_name == "Lekrum"):
-                    sonos.play_uri(file)
-                    print ("close the door")
+
                 time.sleep(1)
             time.sleep(0.4)
             GPIO.output(GPIO_LED, False)
@@ -94,3 +106,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         GPIO.cleanup()
+
+
